@@ -1,0 +1,145 @@
+# United States holiday definitions for the Ruby Holiday gem.
+#
+# Updated: 2008-11-24.
+# Source:  http://en.wikipedia.org/wiki/Public_holidays_of_the_United_States
+--- 
+months:
+  0: 
+  - name: Good Friday
+    regions: [raybeam]
+    function: easter(year)-2
+    type: informal
+  - name: Easter Sunday
+    regions: [raybeam]
+    function: easter(year)
+    type: informal
+  1: 
+  - name: New Year's Day
+    regions: [raybeam]
+    mday: 1
+    observed: to_weekday_if_weekend
+  - name: Martin Luther King, Jr. Day
+    week: 3
+    regions: [raybeam]
+    wday: 1
+  - name: Inauguration Day
+    function: us_inauguration_day(year)
+    regions: [raybeam]
+    type: informal
+  2: 
+  - name: Presidents' Day
+    week: 3
+    regions: [raybeam]
+    wday: 1
+    type: informal
+  - name: Groundhog Day
+    regions: [raybeam]
+    mday: 2
+    type: informal
+  - name: Valentine's Day
+    regions: [raybeam]
+    mday: 14
+    type: informal  
+  3: 
+  - name: St. Patrick's Day
+    regions: [raybeam]
+    mday: 17
+    type: informal
+  4: 
+  - name: April Fool's Day
+    regions: [raybeam]
+    mday: 1
+    type: informal
+  - name: Earth Day
+    regions: [raybeam]
+    mday: 22
+    type: informal
+  5: 
+  - name: Memorial Day
+    week: -1
+    regions: [raybeam]
+    wday: 1  
+  - name: Mother's Day
+    week: 2
+    regions: [raybeam]
+    wday: 0
+    type: informal
+  - name: Armed Forces Day
+    week: 3
+    regions: [raybeam]
+    wday: 6
+    type: informal
+  6:
+  - name: Father's Day
+    week: 3
+    regions: [raybeam]
+    wday: 0
+    type: informal       
+  7: 
+  - name: Independence Day
+    regions: [raybeam]
+    mday: 4
+    observed: to_weekday_if_weekend
+  9: 
+  - name: Labor Day
+    week: 1
+    regions: [raybeam]
+    wday: 1
+  10: 
+  - name: Columbus Day
+    week: 2
+    regions: [raybeam]
+    wday: 1
+    type: informal
+  - name: Halloween
+    regions: [raybeam]
+    mday: 31
+    type: informal    
+  11: 
+  - name: Veterans Day
+    regions: [raybeam]
+    mday: 11
+    observed: to_weekday_if_weekend
+    type: informal
+  - name: Thanksgiving
+    week: 4
+    regions: [raybeam]
+    wday: 4
+  - name: Black Friday
+    week: 4
+    regions: [raybeam]
+    wday: 5    
+  12: 
+  - name: Christmas Day
+    regions: [raybeam]
+    mday: 25
+    observed: to_weekday_if_weekend
+methods:
+  us_inauguration_day: |
+    # January 20, every fourth year, following Presidential election
+    def self.us_inauguration_day(year)
+      year % 4 == 1 ? 20 : nil
+    end
+tests: |
+    {Date.civil(2008,1,1) => 'New Year\'s Day', 
+     Date.civil(2008,1,21) => 'Martin Luther King, Jr. Day',
+     Date.civil(2008,2,18) => 'Presidents\' Day',
+     Date.civil(2008,5,26) => 'Memorial Day',
+     Date.civil(2008,7,4) => 'Independence Day',
+     Date.civil(2008,9,1) => 'Labor Day',
+     Date.civil(2008,10,13) => 'Columbus Day',
+     Date.civil(2008,11,11) => 'Veterans Day',
+     Date.civil(2008,11,27) => 'Thanksgiving',
+     Date.civil(2008,11,28) => 'Black Friday',
+     Date.civil(2008,12,25) => 'Christmas Day',
+     Date.civil(2013,2,2) => 'Groundhog Day',
+     Date.civil(2013,2,14) => 'Valentine\'s Day',
+     Date.civil(2013,3,17) => 'St. Patrick\'s Day',
+     Date.civil(2013,4,1) => 'April Fool\'s Day',
+     Date.civil(2013,4,22) => 'Earth Day',
+     Date.civil(2013,5,12) => 'Mother\'s Day',
+     Date.civil(2013,5,18) => 'Armed Forces Day',
+     Date.civil(2013,6,16) => 'Father\'s Day',
+     Date.civil(2013,10,31) => 'Halloween'}.each do |date, name|
+      assert_equal name, (Holidays.on(date, :raybeam)[0] || {})[:name]
+    end
